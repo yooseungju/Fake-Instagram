@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>LIST</h1>
+
+{% for post in posts %}
+    {% include 'posts/_post.html' %}
+{% endfor %}
+
+<a href="{% url 'posts:create' %}">새로만들기</a>
+
+
+
+
+{% endblock %}
