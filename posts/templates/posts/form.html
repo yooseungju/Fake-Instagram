@@ -9,10 +9,13 @@
 <h1>EDIT</h1>
 {% endif %}
 
-
 <form action="{% url 'posts:create' %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     {% bootstrap_form post_form %}
+    
+    {% if image_form %}
+        {% bootstrap_form image_form show_label=False %}
+    {% endif %}
 
     <button type="submit" class="btn btn-primary">Submit</button>
     <button type="reset" class="btn btn-outline-primary">Cancel</button>

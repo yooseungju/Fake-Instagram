@@ -3,14 +3,14 @@
 {% block content %}
 
 <h1>LIST</h1>
-
+<div class="d-line-flex flex-wrap justify-content-center">
+    
 {% for post in posts %}
     {% include 'posts/_post.html' %}
 {% endfor %}
 
-<a href="{% url 'posts:create' %}">새로만들기</a>
 
-
+</div>
 
 
 {% endblock %}
