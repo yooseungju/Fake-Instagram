@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'imagekit',
     'bootstrap4',
     'posts.apps.PostsConfig',
+    'accounts.apps.AccountsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

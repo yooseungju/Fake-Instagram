@@ -4,7 +4,8 @@ from .models import Post
 
 
 class PostAdmin(admin.ModelAdmin):
-    list_display = ["content",]
+    
+    list_display = ["user","content",]
     
 admin.site.register(Post,PostAdmin)
 

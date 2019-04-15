@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_list_or_404, get_object_or_404
 from .models import Post, Image
 from .forms import PostForm, ImageForm
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 def list(request):
@@ -8,8 +9,10 @@ def list(request):
     context = {'posts':posts}
     return render(request, 'posts/list.html', context)
 
+@login_required
 def create(request):
     if request.method == "POST":
+    
         post_form = PostForm(request.POST)
         if post_form.is_valid():
             post = post_form.save()
@@ -29,7 +32,7 @@ def create(request):
         'image_form': image_form,
     }
     return render(request, 'posts/form.html', context)
-    
+@login_required   
 def update(request, post_pk):
     post = get_object_or_404(Post, id=post_pk)
 
@@ -43,10 +46,14 @@ def update(request, post_pk):
     return render(request, 'posts/form.html', context)
         
     
-        
+@login_required      
 def delete(request, post_pk):
+    
     post = get_object_or_404(Post, pk=post_pk)
-    if request.method == 'POST':
-        post.delete()
-    return redirect('posts:list')
+    if board.user == request.user:
+        if request.method == 'POST':
+            post.delete()
+        return redirect('posts:list')
+    else:
+        return redirect('posts:list')
     

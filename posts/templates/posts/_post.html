@@ -19,35 +19,22 @@
     <span class="sr-only">Next</span>
   </a>
     </div>
-   {% else %}
+    {% else %}
     <img src="#" class="card-img-top" alt="post.image"> {% endif %}
     <div class="card-body">
       <p class="card-text">{{ post.content }}</p>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    {% if user == post.user %}
 
       <a href="{% url 'posts:update' post.pk %}" class="btn btn-warning">수정</a>
 
-
       <form action="{% url 'posts:delete' post.pk %}" method="POST" style="display:inline;">
         {% csrf_token %}
-        <input type="submit" value="삭제" class="btn btn-danger" />
+        <input type="submit" value="삭제" class="btn btn-danger" /> 
+        
       </form>
-
+    {% endif %}
 
     </div>
   </div>
