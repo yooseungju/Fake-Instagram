@@ -1,5 +1,9 @@
+{% load bootstrap4 %}
 <div class="col-10 my-3">
   <div class="card" style="width: 18rem;">
+    <div class="card-header">
+    {{post.user}}
+  </div>
     {% if post.image_set %}
     <div id="post{{ post.pk }}" class="carousel slide" data-ride="carousel">
       <div class="carousel-inner">
@@ -23,18 +27,45 @@
     <img src="#" class="card-img-top" alt="post.image"> {% endif %}
     <div class="card-body">
       <p class="card-text">{{ post.content }}</p>
+      
+
 
 
     {% if user == post.user %}
-
       <a href="{% url 'posts:update' post.pk %}" class="btn btn-warning">수정</a>
-
       <form action="{% url 'posts:delete' post.pk %}" method="POST" style="display:inline;">
         {% csrf_token %}
         <input type="submit" value="삭제" class="btn btn-danger" /> 
-        
       </form>
     {% endif %}
+    
+    <ul class="list-group list-group-flush">
+      {% for comment in post.comment_set.all %}
+  
+      <li class="list-group-item"><b>{{comment.user}}</b>    {{ comment.content }}
+      {% if request.user == comment.user%}
+     
+      <form action="{% url 'posts:comment_delete' comment.pk %}" method="POST" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-light btn-sm">삭제</button>
+      </form>
+      {% endif %}</li>
+      
+      {% endfor %}
+      
+      <div class="card-footer text-muted">
+        <form action="{% url 'posts:comment_create' post.pk %}" method="POST" style="display:inline;">
+          {% csrf_token %}
+          {% bootstrap_form comment_form %}
+        
+          <button type="submit" class="btn btn-dark btn-sm">게시</button>
+        </form>
+      </div>
+    
+
+      
+      
+    </ul>
 
     </div>
   </div>
