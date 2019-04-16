@@ -26,15 +26,23 @@
     {% else %}
     <img src="#" class="card-img-top" alt="post.image"> {% endif %}
     <div class="card-body">
-      <p class="card-text">{{ post.content }}</p>
+      {% if user in post.like_users.all %}
+      <a href="{% url 'posts:like' post.pk %}" class='fas fa-heart fa-lg text-danger'></a>
+      {% else %}
+      <a href="{% url 'posts:like' post.pk %}" class='far fa-heart fa-lg text-dark'></a>
+      {% endif %}
+      <i class="far far-comment fa-lg"></i>
+      <i class="far fa-paper-plane fa-lg"></i>
+      <p class="card-text">좋아요 {{post.like_users.all | length}}개</p>
       
-
-
-
+      <p class="card-text"><b>{{post.user}}</b>  {{ post.content }}</p>
+      
+      
     {% if user == post.user %}
       <a href="{% url 'posts:update' post.pk %}" class="btn btn-warning">수정</a>
       <form action="{% url 'posts:delete' post.pk %}" method="POST" style="display:inline;">
         {% csrf_token %}
+        {% bootstrap_form comment_form %}
         <input type="submit" value="삭제" class="btn btn-danger" /> 
       </form>
     {% endif %}
@@ -47,6 +55,7 @@
      
       <form action="{% url 'posts:comment_delete' comment.pk %}" method="POST" style="display:inline;">
         {% csrf_token %}
+        {% bootstrap_form comment_form %}
         <button type="submit" class="btn btn-light btn-sm">삭제</button>
       </form>
       {% endif %}</li>

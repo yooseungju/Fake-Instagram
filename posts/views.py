@@ -92,3 +92,15 @@ def comment_delete(request, comment_pk):
     else:
         return redirect('posts:list')
         
+        
+@login_required
+def like(request, post_pk):
+    post = get_object_or_404(Post, pk=post_pk)
+    
+    if request.user in post.like_users.all():
+        post.like_users.remove(request.user)
+        
+    else:
+        post.like_users.add(request.user)
+    return redirect('posts:list')
+        
