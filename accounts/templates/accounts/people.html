@@ -1,6 +1,16 @@
 {% extends 'base.html' %} {% block content %}
 
 <h1 class='text-center'>{{people.username}}'s profile</h1>
+
+{% if request.user == people %}
+<a href="{% url 'accounts:update' %}" class="btn btn-outline-secondary">프로필 수정하기</a>
+
+<form action="{% url 'accounts:delete' %}" method="POST" class="d-inline">
+    {% csrf_token %}
+    <button  class="btn btn-outline-secondary" type="submit" value="Submit">회원 탈퇴하기</button>
+</form>
+
+{% endif %}
 <h3 class='text-center'>{{people.username}}이 작성한 게시글</h3>
 <div class="row">
     {% for post in people.post_set.all %}
@@ -20,18 +30,19 @@
 
 <hr>
 
-<h3 class='text-center'> {{people.username}}이 작성한 댓글</h3>
+<h3 class="text-center">내가 작성한 댓글</h3>
 <div class="row">
-    {% for comment in people.comment_set.all %}
-    <div class="card">
-        <blockquote class="blockquote">
-            <p class="mb-0">{{ comment.post.content }}</p>
-            <footer class="blockquote-footer">{{ comment.content }}</footer>
-        </blockquote>
+    {% for comment in people.comment_set.all|dictsortreversed:"pk" %}
+    <div class="col-12 my-2">
+        <div class="card">
+            <div class="card-body">
+                <blockquote class="blockquote">
+                    <p class="mb-0">{{ comment.post }}</p>
+                    <footer class="blockquote-footer">{{ comment.content }}</footer>
+                </blockquote>
+            </div>
+        </div>
     </div>
     {% endfor %}
 </div>
-
-
-
 {% endblock %}
