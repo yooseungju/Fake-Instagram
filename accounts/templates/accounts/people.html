@@ -1,16 +1,23 @@
 {% extends 'base.html' %} {% block content %}
 
 <h1 class='text-center'>{{people.username}}'s profile</h1>
-
+<div class="jumbotron jumbotron-fluid text-center mb-2">
+  <div class="container">
+    <h1 class="display-4">{{people.profile.nickname}}</h1>
+    <p class="lead">{{people.profile.introduction}}</p>
+  </div>
+</div>
 {% if request.user == people %}
-<a href="{% url 'accounts:update' %}" class="btn btn-outline-secondary">프로필 수정하기</a>
-
+<div>
+<a href="{% url 'accounts:update' %}" class="btn btn-outline-secondary">회원정보 수정하기</a>
+<a href="{% url 'accounts:profile_update' %}" class="btn btn-outline-secondary">프로필 작성 및 수정하기</a>
 <form action="{% url 'accounts:delete' %}" method="POST" class="d-inline">
     {% csrf_token %}
     <button  class="btn btn-outline-secondary" type="submit" value="Submit">회원 탈퇴하기</button>
 </form>
-
 {% endif %}
+</div>
+<hr>
 <h3 class='text-center'>{{people.username}}이 작성한 게시글</h3>
 <div class="row">
     {% for post in people.post_set.all %}

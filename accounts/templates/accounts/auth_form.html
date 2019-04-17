@@ -10,6 +10,8 @@
     <h1>회원 수정하기</h1>
 {% elif request.resolver_match.url_name == 'change_password' %}
     <h1>비미번호 변경하기</h1>
+{% elif request.resolver_match.url_name == 'profile_update' %}
+    <h1>프로필 변경하기</h1>
 {% endif %}
     <form action="" method="POST">
     {% csrf_token %}

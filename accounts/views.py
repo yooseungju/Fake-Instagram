@@ -3,8 +3,8 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, Pass
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth import get_user_model
-from .forms import UserCustomChangeForm, UserCustomCreationForm
-
+from .forms import UserCustomChangeForm, UserCustomCreationForm, ProfileForm
+from .models import Profile
 
 # Create your views here.
 
@@ -12,8 +12,10 @@ def signup(request):
     if request.method == 'POST':
         form = UserCustomCreationForm(request.POST)
         if form.is_valid():
-            form.save()
-            
+            user = form.save()
+            Profile.objects.create(user=user)
+            auth_login(request, user)
+
             return redirect('posts:list')
             
     else:
@@ -55,6 +57,8 @@ def update(request):
         form = UserCustomChangeForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
+            Profile.objects.create(user=user)
+            auth_login(request, user)
             return redirect('people', request.user.username)
     else:
         form = UserCustomChangeForm(instance=request.user)
@@ -82,3 +86,17 @@ def delete(request):
         request.user.delete()
     return redirect('posts:list')
     
+    
+def profile_update(request):
+    if request.method == 'POST':
+        profile_form = ProfileForm(request.POST, instance=request.user.profile)
+        if profile_form.is_valid:
+            profile_form.save()
+            return redirect('people', request.user.username)
+            
+    else:
+        profile_form = ProfileForm(instance = request.user.profile)
+        
+    context = {'form': profile_form,}
+    return render(request, 'accounts/auth_form.html', context)
+        
