@@ -1,15 +1,17 @@
 {% extends 'base.html' %}
 {% load bootstrap4 %}
+{% load socialaccount %}
 
 {% block content %}
 {% if request.resolver_match.url_name == 'signup' %}
     <h1>회원가입</h1>
 {% elif request.resolver_match.url_name == 'login' %}
     <h1>로그인</h1>
+    <a href="{% provider_login_url 'kakao' method='oauth2' %}" class='btn btn-warning'>카카오로그인</a>
 {% elif request.resolver_match.url_name == 'update' %}
     <h1>회원 수정하기</h1>
 {% elif request.resolver_match.url_name == 'change_password' %}
-    <h1>비미번호 변경하기</h1>
+    <h1>비밀번호 변경하기</h1>
 {% elif request.resolver_match.url_name == 'profile_update' %}
     <h1>프로필 변경하기</h1>
 {% endif %}
