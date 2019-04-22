@@ -5,6 +5,9 @@
   <div class="container">
     <h1 class="display-4">{{people.profile.nickname}}</h1>
     <p class="lead">{{people.profile.introduction}}</p>
+    
+    <p>팔로잉: {{ people.followings.all.count }}</p>
+    <p>팔로워: {{ people.followers.all.count }}</p>
   </div>
 </div>
 {% if request.user == people %}
@@ -16,6 +19,17 @@
     <button  class="btn btn-outline-secondary" type="submit" value="Submit">회원 탈퇴하기</button>
 </form>
 {% endif %}
+
+{% if request.user != people %}
+    {% if user in people.followers.all %}
+    <a href="{% url 'accounts:follow' people.pk %}" class="btn btn-outline-secondary">Unfollow</a>
+    {% else %}
+    <a href="{% url 'accounts:follow' people.pk %}" class="btn btn-secondary">follow</a>
+    {% endif %}
+{% endif %}
+
+
+
 </div>
 <hr>
 <h3 class='text-center'>{{people.username}}이 작성한 게시글</h3>

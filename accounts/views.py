@@ -99,4 +99,13 @@ def profile_update(request):
         
     context = {'form': profile_form,}
     return render(request, 'accounts/auth_form.html', context)
+    
+
+def follow(request, user_pk):
+    people = get_object_or_404(get_user_model(), pk=user_pk)
+    if request.user in people.followers.all():
+        people.followers.remove(request.user)
+    else:
+        people.followers.add(request.user)
+    return redirect('people', people.username)
         

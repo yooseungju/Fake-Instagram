@@ -1,4 +1,5 @@
 {% load bootstrap4 %}
+{% load posts_templatetag %}
 <div class="col-10 my-3">
   <div class="card" style="width: 18rem;">
     <div class="card-header">
@@ -33,7 +34,7 @@
       <i class="far fa-paper-plane fa-lg"></i>
       <p class="card-text">좋아요 {{post.like_users.all | length}}개</p>
 
-      <p class="card-text"><b>{{post.user}}</b> {{ post.content }}</p>
+      <p class="card-text"><b>{{post.user}}</b> {{ post|hashtag_link|safe }}</p>
 
 
       {% if user == post.user %}
